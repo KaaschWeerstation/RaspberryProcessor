@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="WEATHERDATA">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="MEASUREMENT"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MEASUREMENT">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="STN"/>
+                <xs:element ref="DATE"/>
+                <xs:element ref="TIME"/>
+                <xs:element ref="TEMP"/>
+                <xs:element ref="DEWP"/>
+                <xs:element ref="STP"/>
+                <xs:element ref="SLP"/>
+                <xs:element ref="VISIB"/>
+                <xs:element ref="WDSP"/>
+                <xs:element ref="PRCP"/>
+                <xs:element ref="SNDP"/>
+                <xs:element ref="FRSHTT"/>
+                <xs:element ref="CLDC"/>
+                <xs:element ref="WNDDIR"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="STN" type="xs:integer"/>
+    <xs:element name="DATE" type="xs:NMTOKEN"/>
+    <xs:element name="TIME" type="xs:NMTOKEN"/>
+    <xs:element name="TEMP" type="xs:decimal"/>
+    <xs:element name="DEWP" type="xs:decimal"/>
+    <xs:element name="STP" type="xs:decimal"/>
+    <xs:element name="SLP" type="xs:decimal"/>
+    <xs:element name="VISIB" type="xs:decimal"/>
+    <xs:element name="WDSP" type="xs:decimal"/>
+    <xs:element name="PRCP" type="xs:decimal"/>
+    <xs:element name="SNDP" type="xs:decimal"/>
+    <xs:element name="FRSHTT" type="xs:integer"/>
+    <xs:element name="CLDC" type="xs:decimal"/>
+    <xs:element name="WNDDIR" type="xs:integer"/>
+</xs:schema>
