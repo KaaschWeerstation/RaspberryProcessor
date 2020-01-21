@@ -193,7 +193,6 @@ public class ParallelInputSocket implements Runnable {
                         measurement.setLocalDateTime(LocalDateTime.parse((measurementDateString + nextEvent.toString()), formatter));
                         break;
                     case "TEMP":
-                        System.out.println("Id: " + measurement.getStationId() + " | " + DecimalInt.parseDecimalInt(nextEvent.toString()) + " || " + nextEvent.toString());
                         measurement.setTemperature(DecimalInt.parseDecimalInt(nextEvent.toString()));
                         break;
                     case "DEWP":
@@ -224,7 +223,7 @@ public class ParallelInputSocket implements Runnable {
                         measurement.setCloudCoverage(DecimalInt.parseDecimalInt(nextEvent.toString()));
                         break;
                     case "WNDDIR":
-                        measurement.setWindDirection(Integer.parseInt(nextEvent.toString()));
+                        measurement.setWindDirection(DecimalInt.parseDecimalInt(nextEvent.toString()));
                         break;
                     default:
                         break;

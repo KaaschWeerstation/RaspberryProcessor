@@ -28,10 +28,6 @@ public class OutputThread implements Runnable {
 
         this.stationId = stationId;
         this.stationQueue = stationQueue;
-        //System.out.println(stationId);
-        //System.out.println(Main.serialVersionUID);
-        //System.out.println(Arrays.toString(serialVersionUID));
-        //System.out.println(Arrays.toString(Main.serialVersionUID2));
         this.destinationDirectory = new File(parentDestinationDirectory.getPath() + "/" + stationId);
         if (!destinationDirectory.exists()) { destinationDirectory.mkdir(); }
     }

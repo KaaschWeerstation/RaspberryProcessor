@@ -131,9 +131,8 @@ public class Measurement {
     }
     
     public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
-        System.out.println("Id: " + Integer.toString(stationId));
-        System.out.println(temperature);
-        System.out.println(Arrays.toString(byteConversion.intToBytes(temperature)));
+        byte[] second_of_day = byteConversion.longToBytes(localDateTime.getLong(SECOND_OF_DAY));
+        fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.intToBytes(temperature));
         fileOutputStream.write(byteConversion.intToBytes(dewPoint));
         fileOutputStream.write(byteConversion.intToBytes(airPressureSeaLevel));
@@ -146,9 +145,6 @@ public class Measurement {
         fileOutputStream.write(byteConversion.intToBytes(cloudCoverage));
         fileOutputStream.write(byteConversion.intToBytes(windDirection));
         //byte[] epoch_day = ByteConversion.longToBytes(localDateTime.getLong(EPOCH_DAY));
-        byte[] second_of_day = byteConversion.longToBytes(localDateTime.getLong(SECOND_OF_DAY));
-        //fileOutputStream.write(epoch_day);
-        fileOutputStream.write(second_of_day);
     }
 }
 
