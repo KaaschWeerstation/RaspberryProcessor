@@ -13,7 +13,7 @@ public class DecimalInt {
      * @param s String to parse, with 0, 1 or 2 decimal numbers.
      * @return Integer value of 100* normal value.
      */
-    public static int parseDecimalInt(String s) {
+    public static int parseDecimalInt(String s, int decimalPoints) {
         if (s == null) {
             throw new NumberFormatException();
         }
@@ -22,7 +22,10 @@ public class DecimalInt {
         int radix = 10;
         int max = s.length();
         int result = 0;
-        int decimalCorrection = 100;
+        int decimalCorrection = 10;
+        if (decimalPoints == 2) {
+            decimalCorrection = 100;
+        }
         boolean negative = false;
         boolean isDecimal = false;
         int digit;

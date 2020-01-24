@@ -2,6 +2,7 @@ package nl.hanze.raspberryprocessor.Input;
 
 import nl.hanze.raspberryprocessor.Data.Measurement;
 import nl.hanze.raspberryprocessor.Data.MeasurementInputQueue;
+import nl.hanze.raspberryprocessor.Main;
 import nl.hanze.raspberryprocessor.Utility.SemaphoreInteger;
 import nl.hanze.raspberryprocessor.Utility.DecimalInt;
 import org.xml.sax.ErrorHandler;
@@ -25,6 +26,8 @@ import java.io.StringReader;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static java.time.temporal.ChronoField.SECOND_OF_DAY;
 
 public class ParallelInputSocket implements Runnable {
 
@@ -109,20 +112,27 @@ public class ParallelInputSocket implements Runnable {
                     } else if (readString.equals("</MEASUREMENT>")) {
                         stringBuilder.append(readString);
 
-                        String result = stringBuilder.toString(); // Turn the result into a string
-                        if (isXMLValid(result)) {
-                            try {
-                                stringReader = new StringReader(result);
-                                xmlEventReader = xmlInputFactory.createXMLEventReader(stringReader);
+                        String result = stringBuilder.toString();
+                        stringReader = new StringReader(result);
+                        xmlEventReader = xmlInputFactory.createXMLEventReader(stringReader);
 
-                                while (xmlEventReader.hasNext()) {
-                                    handleEvent(xmlEventReader.nextEvent());
-                                }
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        while (xmlEventReader.hasNext()) {
+                            handleEvent(xmlEventReader.nextEvent());
                         }
+//                        String result = stringBuilder.toString(); // Turn the result into a string
+//                        if (isXMLValid(result)) {
+//                            try {
+//                                stringReader = new StringReader(result);
+//                                xmlEventReader = xmlInputFactory.createXMLEventReader(stringReader);
+//
+//                                while (xmlEventReader.hasNext()) {
+//                                    handleEvent(xmlEventReader.nextEvent());
+//                                }
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
                     // Somewhere in the middle, just append.
                     } else {
                         stringBuilder.append(readString);
@@ -149,7 +159,7 @@ public class ParallelInputSocket implements Runnable {
         stringReader = new StringReader(xml);
         try {
             xmlEventReader = xmlInputFactory.createXMLEventReader(stringReader);
-            validator.validate((new StAXSource(xmlEventReader)));
+            //validator.validate((new StAXSource(xmlEventReader)));
         } catch (Exception e) {
             //System.out.println("INVALID XML");
             return false;
@@ -160,14 +170,14 @@ public class ParallelInputSocket implements Runnable {
         return true;
     }
 
-
+    private boolean trackElement;
     private void handleEvent(XMLEvent nextEvent) {
         if (nextEvent.isStartElement()) {
             StartElement startElement = nextEvent.asStartElement();
             currentXMLElement = startElement.getName().getLocalPart();
 
             if(currentXMLElement.equals("MEASUREMENT")) {
-                //measurementIsValid = true;
+                trackElement = true;
                 measurement = new Measurement();
             }
         } else if (nextEvent.isEndElement()) {
@@ -175,13 +185,14 @@ public class ParallelInputSocket implements Runnable {
             currentXMLElement = endElement.getName().getLocalPart();
 
             if(currentXMLElement.equals("MEASUREMENT")) {
-                //if (measurementIsValid) {
+                if (trackElement) {
                     measurementInputQueue.add(measurement);
-                //}
+                   // measurement.verifyValues();
+                }
             }
 
         } else {
-            if(currentXMLElement != null && !nextEvent.toString().trim().equals("")) {
+            if(currentXMLElement != null && !nextEvent.toString().trim().equals("") && trackElement) {
                 switch (currentXMLElement) {
                     case "STN":
                         measurement.setStationId(Integer.parseInt(nextEvent.toString()));
@@ -191,39 +202,46 @@ public class ParallelInputSocket implements Runnable {
                         break;
                     case "TIME":
                         measurement.setLocalDateTime(LocalDateTime.parse((measurementDateString + nextEvent.toString()), formatter));
+                        long t = measurement.getSecondOfDay();
+                        if (Main.Settings.SelectSeconds) {
+                            if (t % Main.Settings.SelectSecondsValue != 0) {
+                                // Drop this measurement
+                                trackElement = false;
+                            }
+                        }
                         break;
                     case "TEMP":
-                        measurement.setTemperature(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setTemperature(DecimalInt.parseDecimalInt(nextEvent.toString(), 2));
                         break;
                     case "DEWP":
-                        measurement.setDewPoint(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setDewPoint(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "STP":
-                        measurement.setAirPressureStation(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setAirPressureStation(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "SLP":
-                        measurement.setAirPressureSeaLevel(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setAirPressureSeaLevel(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "VISIB":
-                        measurement.setVisibility(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setVisibility(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "WDSP":
-                        measurement.setWindSpeed(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setWindSpeed(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "PRCP":
-                        measurement.setPrecipitation(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setPrecipitation(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "SNDP":
-                        measurement.setFallenSnow(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setFallenSnow(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "FRSHTT":
                         measurement.setEvents(Byte.valueOf(nextEvent.toString(), 2));
                         break;
                     case "CLDC":
-                        measurement.setCloudCoverage(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setCloudCoverage(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     case "WNDDIR":
-                        measurement.setWindDirection(DecimalInt.parseDecimalInt(nextEvent.toString()));
+                        measurement.setWindDirection(DecimalInt.parseDecimalInt(nextEvent.toString(),2));
                         break;
                     default:
                         break;

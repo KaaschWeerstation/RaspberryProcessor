@@ -115,13 +115,44 @@ public class Measurement {
 
     public String toString() {
 
-        return String.format("stationId: %d\ndatetime: %s\ntemperature: %f\ndewPoint: %f\nairPressureStation: %f"
-                        + "\nairPressureSeaLevel: %f\nvisibility: %f\nwindSpeed: %f\nprecipitation: %f\nfallenSnow: %f\nevents: %s"
-                        + "\ncloudCoverage %f\nwindDirection: %d", stationId, localDateTime, temperature, dewPoint, airPressureStation,
+        return String.format("stationId: %d\ndatetime: %s\ntemperature: %d\ndewPoint: %d\nairPressureStation: %d"
+                        + "\nairPressureSeaLevel: %d\nvisibility: %d\nwindSpeed: %d\nprecipitation: %d\nfallenSnow: %d\nevents: %d"
+                        + "\ncloudCoverage %d\nwindDirection: %d", stationId, localDateTime, temperature, dewPoint, airPressureStation,
                 airPressureSeaLevel, visibility, windSpeed, precipitation, fallenSnow, events, cloudCoverage, windDirection
         );
 
     }
+
+    public void verifyValues() {
+        if (temperature == 0) {
+            System.out.println(stationId + " | temp");
+        }
+        if (dewPoint == 0) {
+            System.out.println(stationId + " | dew");
+        }
+        if (airPressureSeaLevel == 0) {
+            System.out.println(stationId + " | pressSea");
+        }
+        if (airPressureStation == 0) {
+            System.out.println(stationId + " | pressStation");
+        }
+        if (visibility == 0) {
+            System.out.println(stationId + " | Visib");
+        }
+        if (windSpeed == 0) {
+            System.out.println(stationId + " | Winds");
+        }if (cloudCoverage == 0) {
+            System.out.println(stationId + " | Cloudc");
+        }if (windDirection == 0) {
+            System.out.println(stationId + " | windDir");
+        }
+
+    }
+
+    public long getSecondOfDay() {
+        return localDateTime.getLong(SECOND_OF_DAY);
+    }
+
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
@@ -131,7 +162,7 @@ public class Measurement {
     }
     
     public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
-        byte[] second_of_day = byteConversion.longToBytes(localDateTime.getLong(SECOND_OF_DAY));
+        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
         fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.intToBytes(temperature));
         fileOutputStream.write(byteConversion.intToBytes(dewPoint));

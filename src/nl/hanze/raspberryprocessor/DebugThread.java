@@ -24,6 +24,7 @@ public class DebugThread implements Runnable {
                 e.printStackTrace();
             }
         }
+
     }
 
 }
