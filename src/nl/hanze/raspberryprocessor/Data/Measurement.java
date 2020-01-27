@@ -123,32 +123,6 @@ public class Measurement {
 
     }
 
-    public void verifyValues() {
-        if (temperature == 0) {
-            System.out.println(stationId + " | temp");
-        }
-        if (dewPoint == 0) {
-            System.out.println(stationId + " | dew");
-        }
-        if (airPressureSeaLevel == 0) {
-            System.out.println(stationId + " | pressSea");
-        }
-        if (airPressureStation == 0) {
-            System.out.println(stationId + " | pressStation");
-        }
-        if (visibility == 0) {
-            System.out.println(stationId + " | Visib");
-        }
-        if (windSpeed == 0) {
-            System.out.println(stationId + " | Winds");
-        }if (cloudCoverage == 0) {
-            System.out.println(stationId + " | Cloudc");
-        }if (windDirection == 0) {
-            System.out.println(stationId + " | windDir");
-        }
-
-    }
-
     public long getSecondOfDay() {
         return localDateTime.getLong(SECOND_OF_DAY);
     }

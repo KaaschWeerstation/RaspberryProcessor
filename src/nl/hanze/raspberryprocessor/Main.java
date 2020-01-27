@@ -4,6 +4,7 @@ import nl.hanze.raspberryprocessor.Data.MeasurementInputQueue;
 import nl.hanze.raspberryprocessor.Data.StationQueue;
 import nl.hanze.raspberryprocessor.Input.WeatherServer;
 import nl.hanze.raspberryprocessor.Output.OutputHandler;
+import nl.hanze.raspberryprocessor.Processing.StationQueueController;
 import nl.hanze.raspberryprocessor.Processing.StationQueueHandler;
 import nl.hanze.raspberryprocessor.Utility.SemaphoreInteger;
 import nl.hanze.raspberryprocessor.Utility.Settings;
@@ -23,12 +24,13 @@ public class Main {
 class Controller {
     private MeasurementInputQueue inputQueue;
     private SemaphoreInteger connectionCount;
-    private Hashtable<Integer, StationQueue> stationQueues;
+    //private Hashtable<Integer, StationQueue> stationQueues;
 
     private DebugThread debugThread;
     private WeatherServer weatherServer;
-    private StationQueueHandler stationQueueHandler;
-    private OutputHandler outputHandler;
+    //private StationQueueHandler stationQueueHandler;
+    //private OutputHandler outputHandler;
+    private StationQueueController stationQueueController;
 
     Controller() {
        inputQueue = new MeasurementInputQueue();
@@ -38,12 +40,17 @@ class Controller {
        Thread weatherServerThread = new Thread(weatherServer);
        weatherServerThread.start();
 
-       outputHandler = new OutputHandler();
+       //outputHandler = new OutputHandler();
 
-       stationQueues = new Hashtable<Integer, StationQueue>(8000);
-       stationQueueHandler = new StationQueueHandler(stationQueues, inputQueue, outputHandler);
-       Thread stationQueueHandlerThread = new Thread(stationQueueHandler);
-       stationQueueHandlerThread.start();
+       //stationQueues = new Hashtable<Integer, StationQueue>(8000);
+       //stationQueueHandler = new StationQueueHandler(stationQueues, inputQueue, outputHandler);
+       //Thread stationQueueHandlerThread = new Thread(stationQueueHandler);
+       //stationQueueHandlerThread.start();
+
+        stationQueueController = new StationQueueController(inputQueue);
+        Thread stationQueueControllerThread = new Thread(stationQueueController);
+        stationQueueControllerThread.start();
+
 
        debugThread = new DebugThread(inputQueue, connectionCount);
        Thread debugThreadThread = new Thread(debugThread);
