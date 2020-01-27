@@ -5,19 +5,20 @@ import nl.hanze.raspberryprocessor.Data.StationQueue;
 import nl.hanze.raspberryprocessor.Output.OutputHandler;
 
 import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class StationQueueController implements Runnable {
 
-    private Hashtable<Integer, StationQueue> stationQueues;
+    private ConcurrentHashMap<Integer, StationQueue> stationQueues;
     private MeasurementInputQueue inputQueue;
     private OutputHandler outputHandler;
 
     private ExecutorService threadPool;
 
     public StationQueueController(MeasurementInputQueue inputQueue) {
-        stationQueues = new Hashtable<>(8000);
+        stationQueues = new ConcurrentHashMap<>(8000);
         this.threadPool = Executors.newCachedThreadPool();
         outputHandler = new OutputHandler();
         this.inputQueue = inputQueue;
