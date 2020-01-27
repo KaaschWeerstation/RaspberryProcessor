@@ -6,6 +6,7 @@ import nl.hanze.raspberryprocessor.Data.StationQueue;
 import nl.hanze.raspberryprocessor.Output.OutputHandler;
 
 import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Takes Measurements out of the MeasurementInputQueue and puts them in a StationQueue for their
@@ -14,11 +15,11 @@ import java.util.Hashtable;
  */
 public class StationQueueHandler implements Runnable {
 
-    private Hashtable<Integer, StationQueue> stationQueues;
+    private ConcurrentHashMap<Integer, StationQueue> stationQueues;
     private MeasurementInputQueue measurementInputQueue;
     private OutputHandler outputHandler;
 
-    public StationQueueHandler(Hashtable<Integer, StationQueue> stationQueues, MeasurementInputQueue measurementInputQueue, OutputHandler outputHandler) {
+    public StationQueueHandler(ConcurrentHashMap<Integer, StationQueue> stationQueues, MeasurementInputQueue measurementInputQueue, OutputHandler outputHandler) {
         this.stationQueues = stationQueues;
         this.measurementInputQueue = measurementInputQueue;
         this.outputHandler = outputHandler;
