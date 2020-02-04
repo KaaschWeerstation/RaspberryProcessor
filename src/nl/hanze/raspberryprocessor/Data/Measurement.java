@@ -140,9 +140,9 @@ public class Measurement {
         fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.shortToBytes((short)temperature));
         fileOutputStream.write(byteConversion.shortToBytes((short)dewPoint));
-        fileOutputStream.write(byteConversion.shortToBytes((short)airPressureSeaLevel));
+        fileOutputStream.write(byteConversion.intToBytes(airPressureSeaLevel));
         fileOutputStream.write(byteConversion.shortToBytes((short)visibility));
-        fileOutputStream.write(byteConversion.shortToBytes((short)airPressureStation));
+        fileOutputStream.write(byteConversion.intToBytes(airPressureStation));
         fileOutputStream.write(byteConversion.shortToBytes((short)windSpeed));
         fileOutputStream.write(byteConversion.shortToBytes((short)precipitation));
         fileOutputStream.write(byteConversion.shortToBytes((short)fallenSnow));
