@@ -136,7 +136,7 @@ public class Measurement {
     }
     
     public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
-        byte[] second_of_day = byteConversion.intToBytes((int)this.getSecondOfDay());
+        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
         fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.shortToBytes((short)temperature));
         fileOutputStream.write(byteConversion.shortToBytes((short)dewPoint));
