@@ -136,13 +136,13 @@ public class Measurement {
     }
     
     public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
-        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
+        byte[] second_of_day = byteConversion.intToBytes((int)this.getSecondOfDay());
         fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.shortToBytes((short)temperature));
         fileOutputStream.write(byteConversion.shortToBytes((short)dewPoint));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureSeaLevel));
+        fileOutputStream.write(byteConversion.shortToBytes((short)(airPressureSeaLevel-90000)));
         fileOutputStream.write(byteConversion.shortToBytes((short)visibility));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureStation));
+        fileOutputStream.write(byteConversion.shortToBytes((short)(airPressureStation-90000)));
         fileOutputStream.write(byteConversion.shortToBytes((short)windSpeed));
         fileOutputStream.write(byteConversion.shortToBytes((short)precipitation));
         fileOutputStream.write(byteConversion.shortToBytes((short)fallenSnow));

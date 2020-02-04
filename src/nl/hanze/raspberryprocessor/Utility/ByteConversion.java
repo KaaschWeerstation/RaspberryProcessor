@@ -14,7 +14,7 @@ public class ByteConversion {
         this.intBuffer = ByteBuffer.allocate(Integer.BYTES);
         this.shortBuffer = ByteBuffer.allocate(Short.BYTES);
         this.byteBuffer = ByteBuffer.allocate(Byte.BYTES);
-        this.threeBytesBuffer = ByteBuffer.allocate(3);
+//        this.threeBytesBuffer = ByteBuffer.allocate(3);
     }
 
     public byte[] longToBytes(long x) {
