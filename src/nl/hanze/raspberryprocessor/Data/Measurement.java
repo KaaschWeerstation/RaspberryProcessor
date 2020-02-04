@@ -138,17 +138,17 @@ public class Measurement {
     public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
         byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
         fileOutputStream.write(second_of_day);
-        fileOutputStream.write(byteConversion.intToBytes(temperature));
-        fileOutputStream.write(byteConversion.intToBytes(dewPoint));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureSeaLevel));
-        fileOutputStream.write(byteConversion.intToBytes(visibility));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureStation));
-        fileOutputStream.write(byteConversion.intToBytes(windSpeed));
-        fileOutputStream.write(byteConversion.intToBytes(precipitation));
-        fileOutputStream.write(byteConversion.intToBytes(fallenSnow));
-        fileOutputStream.write(byteConversion.intToBytes(events));
-        fileOutputStream.write(byteConversion.intToBytes(cloudCoverage));
-        fileOutputStream.write(byteConversion.intToBytes(windDirection));
+        fileOutputStream.write(byteConversion.shortToBytes((short)temperature));
+        fileOutputStream.write(byteConversion.shortToBytes((short)dewPoint));
+        fileOutputStream.write(byteConversion.shortToBytes((short)airPressureSeaLevel));
+        fileOutputStream.write(byteConversion.shortToBytes((short)visibility));
+        fileOutputStream.write(byteConversion.shortToBytes((short)airPressureStation));
+        fileOutputStream.write(byteConversion.shortToBytes((short)windSpeed));
+        fileOutputStream.write(byteConversion.shortToBytes((short)precipitation));
+        fileOutputStream.write(byteConversion.shortToBytes((short)fallenSnow));
+        fileOutputStream.write(byteConversion.byteToBytes(events));
+        fileOutputStream.write(byteConversion.shortToBytes((short)cloudCoverage));
+        fileOutputStream.write(byteConversion.shortToBytes((short)windDirection));
         //byte[] epoch_day = ByteConversion.longToBytes(localDateTime.getLong(EPOCH_DAY));
     }
 }
