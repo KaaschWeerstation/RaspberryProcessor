@@ -4,7 +4,7 @@ import nl.hanze.raspberryprocessor.Data.MeasurementInputQueue;
 import nl.hanze.raspberryprocessor.Data.StationQueue;
 import nl.hanze.raspberryprocessor.Output.OutputHandler;
 
-import java.util.Hashtable;
+//import java.util.Hashtable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

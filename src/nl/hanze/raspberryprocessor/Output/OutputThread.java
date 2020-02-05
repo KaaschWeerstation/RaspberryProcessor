@@ -56,7 +56,7 @@ public class OutputThread implements Runnable {
                     File currentFile = new File(destinationDirectory + "/" + date + ".wd");
                     try {
                         currentFile.createNewFile();
-                        currentFileOutputStream = new FileOutputStream(currentFile, true);
+                        currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile));
                         writeHeader(currentFileOutputStream);
                         measurement.Save(currentFileOutputStream, byteConversion);
                     } catch (Exception e) {
