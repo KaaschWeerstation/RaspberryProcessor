@@ -7,7 +7,7 @@ public class ByteConversion {
     private ByteBuffer intBuffer;
     private ByteBuffer shortBuffer;
     private ByteBuffer byteBuffer;
-    private ByteBuffer threeBytesBuffer;
+    //private ByteBuffer threeBytesBuffer;
 
     public ByteConversion() {
         this.buffer = ByteBuffer.allocate(Long.BYTES);
