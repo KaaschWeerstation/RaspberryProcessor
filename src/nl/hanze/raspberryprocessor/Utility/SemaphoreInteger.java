@@ -2,7 +2,7 @@ package nl.hanze.raspberryprocessor.Utility;
 
 public class SemaphoreInteger {
 
-    private int value = 0;
+    private int value;
 
     public SemaphoreInteger(int integer) {
         this.value = integer;
@@ -10,7 +10,7 @@ public class SemaphoreInteger {
 
     public synchronized void increment() {
         this.value++;
-        this.notify();
+        this.notifyAll();
     }
 
     public synchronized void decrement() throws  InterruptedException {
@@ -18,7 +18,7 @@ public class SemaphoreInteger {
             wait(0);
         }
         value--;
-        this.notify();
+        this.notifyAll();
     }
 
     public synchronized int get() {
