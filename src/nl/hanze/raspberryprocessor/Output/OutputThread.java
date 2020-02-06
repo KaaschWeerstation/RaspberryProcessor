@@ -8,8 +8,10 @@ import nl.hanze.raspberryprocessor.Utility.ByteConversion;
 import java.io.File;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 
+import static java.nio.file.StandardOpenOption.APPEND;
 import static java.time.temporal.ChronoField.EPOCH_DAY;
 
 public class OutputThread implements Runnable {
@@ -57,9 +59,13 @@ public class OutputThread implements Runnable {
                     }
                     File currentFile = new File(destinationDirectory + "/" + date + ".wd");
                     try {
-                        currentFile.createNewFile();
-                        currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile.getPath()));
-                        writeHeader(currentFileOutputStream);
+                        if(!currentFile.exists()) {
+                            currentFile.createNewFile();
+                            currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile.getPath()), APPEND);
+                            writeHeader(currentFileOutputStream);
+                        } else {
+                            currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile.getPath()), APPEND);
+                        }
                         measurement.Save(currentFileOutputStream, byteConversion);
                     } catch (Exception e) {
                         e.printStackTrace();

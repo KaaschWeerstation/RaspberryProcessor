@@ -114,6 +114,7 @@ public class Measurement {
 
     public Measurement() {}
 
+    @Override
     public String toString() {
 
         return String.format("stationId: %d\ndatetime: %s\ntemperature: %d\ndewPoint: %d\nairPressureStation: %d"

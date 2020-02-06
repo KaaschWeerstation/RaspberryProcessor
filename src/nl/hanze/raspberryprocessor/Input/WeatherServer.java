@@ -33,6 +33,7 @@ public class WeatherServer implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         boolean doWhile = true;
         while (doWhile) {
