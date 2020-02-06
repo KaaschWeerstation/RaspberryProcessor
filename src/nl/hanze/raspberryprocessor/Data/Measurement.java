@@ -5,6 +5,7 @@ import nl.hanze.raspberryprocessor.Utility.ByteConversion;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -135,7 +136,7 @@ public class Measurement {
         this.localDateTime = localDateTime;
     }
     
-    public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
+    public void Save(OutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
 //        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
 //        fileOutputStream.write(second_of_day);
         fileOutputStream.write(byteConversion.intToBytes((int)(this.getSecondOfDay())));
