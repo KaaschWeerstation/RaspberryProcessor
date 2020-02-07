@@ -6,8 +6,12 @@ import nl.hanze.raspberryprocessor.Main;
 import nl.hanze.raspberryprocessor.Utility.ByteConversion;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Paths;
 
+import static java.nio.file.StandardOpenOption.APPEND;
 import static java.time.temporal.ChronoField.EPOCH_DAY;
 
 public class OutputThread implements Runnable {
@@ -18,7 +22,7 @@ public class OutputThread implements Runnable {
     private final int stationId;
     private StationQueue stationQueue;
     private long currentDate;
-    private FileOutputStream currentFileOutputStream;
+    private OutputStream currentFileOutputStream;
 
     public OutputThread(File parentDestinationDirectory, int stationId, StationQueue stationQueue) {
         byteConversion = new ByteConversion();
@@ -55,9 +59,13 @@ public class OutputThread implements Runnable {
                     }
                     File currentFile = new File(destinationDirectory + "/" + date + ".wd");
                     try {
-                        currentFile.createNewFile();
-                        currentFileOutputStream = new FileOutputStream(currentFile, true);
-                        writeHeader(currentFileOutputStream);
+                        if(!currentFile.exists()) {
+                            currentFile.createNewFile();
+                            currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile.getPath()), APPEND);
+                            writeHeader(currentFileOutputStream);
+                        } else {
+                            currentFileOutputStream = Files.newOutputStream(Paths.get(currentFile.getPath()), APPEND);
+                        }
                         measurement.Save(currentFileOutputStream, byteConversion);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -69,7 +77,7 @@ public class OutputThread implements Runnable {
         }
     }
 
-    private void writeHeader(FileOutputStream fileOutputStream) {
+    private void writeHeader(OutputStream fileOutputStream) {
         try {
             fileOutputStream.write(serialVersionUID);
             fileOutputStream.write(byteConversion.intToBytes(stationId));

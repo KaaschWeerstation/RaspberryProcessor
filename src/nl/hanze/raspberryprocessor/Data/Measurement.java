@@ -5,6 +5,7 @@ import nl.hanze.raspberryprocessor.Utility.ByteConversion;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -113,6 +114,7 @@ public class Measurement {
 
     public Measurement() {}
 
+    @Override
     public String toString() {
 
         return String.format("stationId: %d\ndatetime: %s\ntemperature: %d\ndewPoint: %d\nairPressureStation: %d"
@@ -135,20 +137,24 @@ public class Measurement {
         this.localDateTime = localDateTime;
     }
     
-    public void Save(FileOutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
-        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
-        fileOutputStream.write(second_of_day);
-        fileOutputStream.write(byteConversion.intToBytes(temperature));
-        fileOutputStream.write(byteConversion.intToBytes(dewPoint));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureSeaLevel));
-        fileOutputStream.write(byteConversion.intToBytes(visibility));
-        fileOutputStream.write(byteConversion.intToBytes(airPressureStation));
-        fileOutputStream.write(byteConversion.intToBytes(windSpeed));
-        fileOutputStream.write(byteConversion.intToBytes(precipitation));
-        fileOutputStream.write(byteConversion.intToBytes(fallenSnow));
-        fileOutputStream.write(byteConversion.intToBytes(events));
-        fileOutputStream.write(byteConversion.intToBytes(cloudCoverage));
-        fileOutputStream.write(byteConversion.intToBytes(windDirection));
+    public void Save(OutputStream fileOutputStream, ByteConversion byteConversion) throws IOException {
+//        byte[] second_of_day = byteConversion.longToBytes(this.getSecondOfDay());
+//        fileOutputStream.write(second_of_day);
+        fileOutputStream.write(byteConversion.intToBytes((int)(this.getSecondOfDay())));
+        fileOutputStream.write(byteConversion.shortToBytes((short)temperature));
+        fileOutputStream.write(byteConversion.byteToBytes((byte)((dewPoint-temperature)/10))); //sends difference
+        fileOutputStream.write(byteConversion.shortToBytes((short)(airPressureSeaLevel-90000)));
+        fileOutputStream.write(byteConversion.shortToBytes((short)visibility));
+        fileOutputStream.write(byteConversion.byteToBytes((byte)((airPressureStation-airPressureSeaLevel)/10)));
+        fileOutputStream.write(byteConversion.shortToBytes((short)windSpeed));
+        fileOutputStream.write(byteConversion.shortToBytes((short)precipitation));
+        fileOutputStream.write(byteConversion.shortToBytes((short)fallenSnow));
+        fileOutputStream.write(byteConversion.byteToBytes(events));
+        fileOutputStream.write(byteConversion.shortToBytes((short)cloudCoverage));
+        fileOutputStream.write(byteConversion.shortToBytes((short)windDirection));
+        // Testing purposes
+//        fileOutputStream.write(byteConversion.shortToBytes((short)dewPoint));
+//        fileOutputStream.write(byteConversion.shortToBytes((short)(airPressureStation-90000)));
         //byte[] epoch_day = ByteConversion.longToBytes(localDateTime.getLong(EPOCH_DAY));
     }
 }
