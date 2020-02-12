@@ -1,6 +1,7 @@
 package nl.hanze.raspberryprocessor.Input;
 
 import nl.hanze.raspberryprocessor.Data.MeasurementInputQueue;
+import nl.hanze.raspberryprocessor.Main;
 import nl.hanze.raspberryprocessor.Utility.SemaphoreInteger;
 
 import java.net.ServerSocket;
@@ -10,7 +11,7 @@ import java.util.concurrent.Executors;
 
 public class WeatherServer implements Runnable {
 
-    private static final int PORT = 7789;
+    private static int Port = Main.Settings.Port;
     private static final int maximumConnections = 800;
 
     private MeasurementInputQueue inputQueue;
@@ -26,7 +27,7 @@ public class WeatherServer implements Runnable {
 
         this.threadPool = Executors.newCachedThreadPool();
         try {
-            this.serverSocket = new ServerSocket(PORT);
+            this.serverSocket = new ServerSocket(Port);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("WeatherServer - Couldn't start a serverSocket!");

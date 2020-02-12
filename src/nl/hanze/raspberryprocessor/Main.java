@@ -56,7 +56,9 @@ class Controller {
        Thread debugThreadThread = new Thread(debugThread);
        debugThreadThread.start();
 
-       if (Main.Settings.Mute) {
+        System.out.println("Using Port: " + Main.Settings.Port);
+
+        if (Main.Settings.Mute) {
            System.out.println("Started RaspberryProcessor. Output = disabled");
 
            System.setOut(new java.io.PrintStream(new java.io.OutputStream() {
@@ -95,6 +97,7 @@ class Controller {
                @Override public java.io.PrintStream append(char c) { return this; }
            });
        }
+
    }
 }
 
