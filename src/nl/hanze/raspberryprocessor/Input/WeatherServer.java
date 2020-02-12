@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 
 public class WeatherServer implements Runnable {
 
-    private static int Port = Main.Settings.Port;
-    private static final int maximumConnections = 800;
+    private final int PORT;
+    private final int maximumConnections = 800;
 
     private MeasurementInputQueue inputQueue;
     private SemaphoreInteger connectionCount;
@@ -24,10 +24,11 @@ public class WeatherServer implements Runnable {
     public WeatherServer(MeasurementInputQueue inputQueue, SemaphoreInteger connectionCount) {
         this.inputQueue = inputQueue;
         this.connectionCount = connectionCount;
+        this.PORT = Main.Settings.Port;
 
         this.threadPool = Executors.newCachedThreadPool();
         try {
-            this.serverSocket = new ServerSocket(Port);
+            this.serverSocket = new ServerSocket(PORT);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("WeatherServer - Couldn't start a serverSocket!");

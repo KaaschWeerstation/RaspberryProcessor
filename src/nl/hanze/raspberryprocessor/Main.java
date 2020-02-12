@@ -56,10 +56,8 @@ class Controller {
        Thread debugThreadThread = new Thread(debugThread);
        debugThreadThread.start();
 
-        System.out.println("Using Port: " + Main.Settings.Port);
-
-        if (Main.Settings.Mute) {
-           System.out.println("Started RaspberryProcessor. Output = disabled");
+       if (Main.Settings.Mute) {
+           //System.out.println("Started RaspberryProcessor. Output = disabled");
 
            System.setOut(new java.io.PrintStream(new java.io.OutputStream() {
                @Override public void write(int b) {}
@@ -98,6 +96,11 @@ class Controller {
            });
        }
 
+       System.out.println("Started Raspberryprocessor");
+       System.out.println("Output muted: " + Main.Settings.Mute);
+       System.out.println("Queue Size: " + Main.Settings.QueueSize);
+      // System.out.println("MaxConnections: " + Main.Settings.MaxConnections);
+       System.out.println("Port: " + Main.Settings.Port);
    }
 }
 
