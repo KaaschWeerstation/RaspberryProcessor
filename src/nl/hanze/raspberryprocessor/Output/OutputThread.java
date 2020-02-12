@@ -32,7 +32,7 @@ public class OutputThread implements Runnable {
 
         this.stationId = stationId;
         this.stationQueue = stationQueue;
-        this.destinationDirectory = new File(parentDestinationDirectory.getPath() + "/" + stationId);
+        this.destinationDirectory = new File(parentDestinationDirectory.getPath() + "/weatherdata/" + stationId);
         if (!destinationDirectory.exists()) { destinationDirectory.mkdir(); }
     }
 
