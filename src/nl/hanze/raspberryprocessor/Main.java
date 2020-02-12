@@ -40,9 +40,9 @@ class Controller {
         Thread weatherServerThread = new Thread(weatherServer);
         weatherServerThread.start();
 
-        //stationQueueController = new StationQueueController(inputQueue);
-        //Thread stationQueueControllerThread = new Thread(stationQueueController);
-        //stationQueueControllerThread.start();
+        stationQueueController = new StationQueueController(inputQueue);
+        Thread stationQueueControllerThread = new Thread(stationQueueController);
+        stationQueueControllerThread.start();
 
         debugThread = new DebugThread(inputQueue, connectionCount);
         Thread debugThreadThread = new Thread(debugThread);

@@ -28,6 +28,12 @@ public class ByteConversion {
         return buffer.getLong();
     }
 
+    public int bytesToInt(byte[] bytes) {
+        buffer.put(bytes, 0, bytes.length);
+        buffer.flip();//need flip
+        return buffer.getInt();
+    }
+
     public byte[] intToBytes(int x) {
         intBuffer.putInt(0,x );
         return intBuffer.array();
