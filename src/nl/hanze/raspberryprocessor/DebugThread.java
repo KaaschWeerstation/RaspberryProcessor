@@ -13,6 +13,7 @@ public class DebugThread implements Runnable {
         this.semaphoreInteger = semaphoreInteger;
     }
 
+    @Override
     public void run() {
         while(true) {
             try {

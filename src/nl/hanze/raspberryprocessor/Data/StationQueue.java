@@ -39,7 +39,7 @@ public class StationQueue {
 //        }
 
         linkedList.addLast(measurement);
-        this.notify();
+        this.notifyAll();
     }
 
     public synchronized Measurement Dequeue() throws InterruptedException {
@@ -47,7 +47,7 @@ public class StationQueue {
             wait(0);
         }
         Measurement measurement = linkedList.pollFirst();
-        this.notify();
+        this.notifyAll();
         return measurement;
     }
 

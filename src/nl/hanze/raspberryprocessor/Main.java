@@ -24,9 +24,12 @@ public class Main {
 class Controller {
     private MeasurementInputQueue inputQueue;
     private SemaphoreInteger connectionCount;
+    //private Hashtable<Integer, StationQueue> stationQueues;
 
     private DebugThread debugThread;
     private WeatherServer weatherServer;
+    //private StationQueueHandler stationQueueHandler;
+    //private OutputHandler outputHandler;
     private StationQueueController stationQueueController;
 
     Controller() {
@@ -46,7 +49,7 @@ class Controller {
         debugThreadThread.start();
 
         if (Main.Settings.Mute) {
-            System.out.println("Started RaspberryProcessor. Output = disabled");
+           //System.out.println("Started RaspberryProcessor. Output = disabled");
 
             System.setOut(new java.io.PrintStream(new java.io.OutputStream() {
                 @Override public void write(int b) {}
@@ -84,6 +87,12 @@ class Controller {
                 @Override public java.io.PrintStream append(char c) { return this; }
             });
        }
+
+       System.out.println("Started Raspberryprocessor");
+       System.out.println("Output muted: " + Main.Settings.Mute);
+       System.out.println("Queue Size: " + Main.Settings.QueueSize);
+      // System.out.println("MaxConnections: " + Main.Settings.MaxConnections);
+       System.out.println("Port: " + Main.Settings.Port);
    }
 }
 
